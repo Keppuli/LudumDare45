@@ -57,6 +57,7 @@ MonoBehaviour:
   followCursor: 0
   originalPosition: {x: 0, y: 0, z: 0}
   type: 2
+  description: Roque comet. Drag & Drop this to start something new..
 --- !u!222 &3356109791516851527
 CanvasRenderer:
   m_ObjectHideFlags: 0

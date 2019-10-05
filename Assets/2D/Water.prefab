@@ -57,6 +57,7 @@ MonoBehaviour:
   followCursor: 0
   originalPosition: {x: 0, y: 0, z: 0}
   type: 3
+  description: Water element
 --- !u!222 &6421923176785955428
 CanvasRenderer:
   m_ObjectHideFlags: 0

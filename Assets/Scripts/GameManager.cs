@@ -5,15 +5,16 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public GameObject sand;
-    public GameObject lake;
     public Mesh crater;
-    public Material hoverMaterial;
+    public Material hoverMaterialNeutral;
+    public Material hoverMaterialGreen;
+    public Material hoverMaterialRed;
     public GameObject dustPE;
     public GameObject raincloudsPE;
 
+    public GameObject[] sectors; // Array of different possibilities
     public GameObject[] elements; // Array of different possibilities
-    public List<GameObject> existingElements = new List<GameObject>(); // List of actually existing ones
+    public List<GameObject> existingElements = new List<GameObject>(); // List of existing elements in the game world
     enum Progression { Meteor, Sand, Crater, Lake };
     Progression progression;
 
@@ -25,7 +26,7 @@ public class GameManager : MonoBehaviour
             instance = this;
     }
 
-    public void CreateElementObject(Draggable.Type type, Vector2 position, bool newPosition)
+    public void CreateElementObject(Element.Type type, Vector2 position, bool newPosition)
     {
         Vector3 pos;
         if (newPosition)
@@ -35,14 +36,26 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < elements.Length; i++)
         {
-            if (type == elements[i].GetComponent<Draggable>().type)
+            if (type == elements[i].GetComponent<Element>().type)
             {
                 Debug.Log("Matching prefab for Type:");
-                Instantiate(elements[i], pos, Quaternion.identity, GameObject.Find("Canvas").transform);
+                var insta = Instantiate(elements[i], pos, Quaternion.identity, GameObject.Find("Canvas").transform);
+                insta.transform.SetSiblingIndex(0);
                 existingElements.Add(elements[i]);
             }
         }
     }
+    public int CheckElementObjectCount(Element.Type type) // Avoid sectors spamming too many objects
+    {
+        int count = 0;
+        for (int i = 0; i < elements.Length; i++)
+        {
+            if (type == elements[i].GetComponent<Element>().type)
+                count++;
+        }
+        return count;
+    }
+
     public void DestroyUIObject(GameObject obj)
     {
         existingElements.Remove(obj);
@@ -62,8 +75,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("Meteor event activated!");
         ConsoleManager.instance.ChangeText("Comet brought something new to this barren land. Try mixing them up.");
         CameraController.instance.shakeDuration = 1f;
-        CreateElementObject(Draggable.Type.Fire, position,true);
-        CreateElementObject(Draggable.Type.Water, position, true);
+        CreateElementObject(Element.Type.Fire, position,true);
+        CreateElementObject(Element.Type.Water, position, true);
+        CreateElementObject(Element.Type.Water, position, true);
         Instantiate(dustPE, position, Quaternion.identity);
     }
 
@@ -77,6 +91,6 @@ public class GameManager : MonoBehaviour
 
     public void EventFireToWater()
     {
-        lake.SetActive(true);
+       
     }
 }

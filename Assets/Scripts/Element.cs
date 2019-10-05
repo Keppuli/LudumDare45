@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler //IPointerClickHandler? 
+public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler //IPointerClickHandler? 
 {
     //public Item item;              
     public GameObject textObj;
@@ -12,6 +12,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public Vector3 originalPosition;
     public enum Type {None, NoMatch, Meteor, Water, Sand, Earth, Fire, Coal, Rain}
     public Type type;
+    public string description;
 
     private void Start()
     {
@@ -26,6 +27,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        GetComponent<RectTransform>().localScale = new Vector3(1.2f, 1.2f, 1.2f);
+        MouseController.instance.draggingElement = true;
         GetComponent<BoxCollider2D>().isTrigger = true;
 
         // Play pickup sound
@@ -67,15 +70,18 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         // By default return no match
         return Type.NoMatch;
     }
-    bool ElementSectorCombiner(Type element, GameObject sector)
+    bool ElementSectorCombiner(Type element, GameObject sector, bool onlyCheck)
     {
         var sectorType = sector.GetComponent<Sector>().type;
         if (element == Type.Meteor) // Tutorial meteor
         {
             if (sectorType == Sector.Type.Sand)
             {
-                sector.GetComponent<Sector>().ChangeType(Sector.Type.Crater);
-                GameManager.instance.EventMeteor(sector.transform.position);
+                if (!onlyCheck)
+                {
+                    sector.GetComponent<Sector>().ChangeType(Sector.Type.Crater);
+                    GameManager.instance.EventMeteor(sector.transform.position);
+                }
                 return true;
             }
         }
@@ -84,7 +90,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             if (sector.tag == "Sand")
             {
-                GameManager.instance.EventLake(sector.transform.position);
+                if (!onlyCheck)
+                    GameManager.instance.EventLake(sector.transform.position);
                 return true;
             }
         }
@@ -92,7 +99,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             if (sector.tag == "Water")
             {
-                GameManager.instance.EventFireToWater();
+                if (!onlyCheck)
+                    GameManager.instance.EventFireToWater();
                 return true;
             }
         }
@@ -100,10 +108,13 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             if (sector.tag == "Water")
             {
-                if (sectorType == Sector.Type.Sand)
+                if (sectorType == Sector.Type.Crater)
                 {
-                    sector.GetComponent<Sector>().ChangeType(Sector.Type.Lake);
-                    GameManager.instance.EventLake(sector.transform.position);
+                    if (!onlyCheck)
+                    {
+                        sector.GetComponent<Sector>().ChangeType(Sector.Type.Lake);
+                        GameManager.instance.EventLake(sector.transform.position);
+                    }
                     return true;
                 }
             }
@@ -114,6 +125,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        MouseController.instance.draggingElement = false;
+
         // Play sound when letting go of item
         //AudioManager.instance.InvItemPlaceSound(item.category, amount);
 #region UI Object
@@ -135,7 +148,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
             // Dragging on other UI object will combine the two if match OK
             var hoveredUIObject = MouseController.instance.hoveredElement;
-            var combinedType = ElementCombiner(type, hoveredUIObject.GetComponent<Draggable>().type);
+            var combinedType = ElementCombiner(type, hoveredUIObject.GetComponent<Element>().type);
             Vector2 combinePosition;
             if (combinedType != Type.NoMatch)
             {
@@ -160,40 +173,12 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 #region 3D Object
         if (MouseController.instance.hoveredSector)
         {
-            if (ElementSectorCombiner(type, MouseController.instance.hoveredSector)) // Activates matching event
+            if (ElementSectorCombiner(type, MouseController.instance.hoveredSector,false)) // Activates matching event
                 Destroy(gameObject);
 
         }
 #endregion
 
-
-        // Check if mouse over 3D object
-        /*
-        else if (MouseController.instance.mouseOverInventorySlot != null)
-        {
-            //Debug.Log("OnEndDrag on inventory slot.");
-
-            hostInventory.GetComponent<Inventory>().ColorItemSlots(true, gameObject, MouseController.instance.mouseOverInventorySlot);
-            InventorySlot slot = MouseController.instance.mouseOverInventorySlot.GetComponent<InventorySlot>();
-            //  Check if held obj can fit in the NEW area
-            if (slot.hostInventory.GetComponent<Inventory>().ReserveSlots(gameObject, MouseController.instance.mouseOverInventorySlot))
-            {
-                // Update inventory item count
-                slot.hostInventory.GetComponent<Inventory>().UpdateItemDictionary(gameObject, true);
-                MoveToSlot(slot);
-
-                // Check if we are dropping on Crafting Inventory
-                if (slot.hostInventory.GetComponent<CraftingInput>())
-                {
-                    slot.hostInventory.GetComponent<CraftingInput>().CheckIncredientsRecipeCorrelation(); // Check if crafting should spawn item
-                }
-            }
-            // If new inventory area lacks space, return object to ORIGINAL area
-            else
-                ReturnItem();
-        }
-        */
-        // Player is dropping item return item to original position
         else
         {
             ReleaseWithCheck();
@@ -215,8 +200,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     }
     public void ReleaseItem()
     {
-        GetComponent<BoxCollider2D>().isTrigger = false;
+        GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
 
+        GetComponent<BoxCollider2D>().isTrigger = false;
         followCursor = false;    // Release mouse follow
         GetComponent<CanvasGroup>().blocksRaycasts = true;      // Take raycast again
         MouseController.instance.heldItem = null;               // Release reference to held item
@@ -232,6 +218,10 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     }
     public void OnDrag(PointerEventData eventData)
     {
+        if (ElementSectorCombiner(type, MouseController.instance.hoveredSector, true))
+            MouseController.instance.hoveredSector.GetComponent<Sector>().ChangeMaterialToHover(1); // yeas
+        else
+            MouseController.instance.hoveredSector.GetComponent<Sector>().ChangeMaterialToHover(2); // noes
     }
     Vector3 GetMidPoint(Vector3 a, Vector3 b)
     {

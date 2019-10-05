@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class MouseController : MonoBehaviour
 {
     public static MouseController instance;
+
+    public GameObject mouseOverInfo;
+    public TextMeshProUGUI mouseOverInfoText;
 
     public GameObject heldItem;
     public Texture2D cursorTexture;
@@ -15,6 +19,8 @@ public class MouseController : MonoBehaviour
 
     public GameObject hoveredSector;
     public GameObject hoveredElement;
+
+    public bool draggingElement;
 
     private void Awake()
     {
@@ -29,7 +35,27 @@ public class MouseController : MonoBehaviour
     void Update()
     {
         CheckMouseOver();
+        mouseOverInfo.transform.position = Input.mousePosition;
+        UpdateMouseOverInfo();
     }
+    public void UpdateMouseOverInfo()
+    {
+        mouseOverInfo.transform.SetSiblingIndex(999); // Place at bottom of Canvas hiererchy to maintain on top position
+
+        if (hoveredElement)
+        {
+            mouseOverInfoText.text = hoveredElement.GetComponent<Element>().description;
+        }
+        else if (hoveredSector)
+        {
+            mouseOverInfoText.text = hoveredSector.GetComponent<Sector>().description;
+        }
+        else
+            mouseOverInfoText.text = "";
+
+
+    }
+
     public bool CheckMouseBounds() // Checks that mouse is within screen bounds
     {
         if (Input.mousePosition.x == 0 || Input.mousePosition.y == 0 || Input.mousePosition.x >= Screen.width - 1 || Input.mousePosition.y >= Screen.height - 1) return false;
@@ -80,7 +106,8 @@ public class MouseController : MonoBehaviour
         }
 
         hoveredSector = obj;
-        hoveredSector.GetComponent<Sector>().ChangeMaterialToHover();
+        if (!draggingElement)
+            hoveredSector.GetComponent<Sector>().ChangeMaterialToHover(0);
         Debug.Log(hoveredSector.GetComponent<Renderer>().material);
 
     }
@@ -93,6 +120,5 @@ public class MouseController : MonoBehaviour
         hoveredSector.GetComponent<Sector>().audioPlayed = false;
         hoveredSector.GetComponent<Sector>().ResetMaterial();
         hoveredSector = null;
-    
     }
 }

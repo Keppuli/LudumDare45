@@ -10,14 +10,40 @@ public class Sector : MonoBehaviour
     Material startingMaterial;
     public enum Type { Sand, Crater, Lake, };
     public Type type;
-    
+    public string description;
+
+    public float generateTime = 20f;
+    public float generateTimer = 20f;
+
     void Start()
     {
         startingMaterial = GetComponent<Renderer>().material;
         //audioSource = GetComponent<AudioSource>();
         if (!GetComponent<BoxCollider>())
             gameObject.AddComponent(typeof(MeshCollider));
-        
+    }
+    private void Update()
+    {
+        if (generateTimer > 0f)
+        {
+            generateTimer -= Time.deltaTime;
+            // After 5 sec start to fade
+            if (generateTimer <= 0f)
+            {
+                GenerateElement();
+                generateTimer = generateTime;
+            }
+        }
+    }
+
+    void GenerateElement()
+    {
+        if (type == Type.Lake)
+        {
+            if (GameManager.instance.CheckElementObjectCount(Element.Type.Rain) < 1)
+                GameManager.instance.CreateElementObject(Element.Type.Rain, transform.position, true);
+            return;
+        }
     }
 
     public void ChangeType(Type newType)
@@ -25,9 +51,14 @@ public class Sector : MonoBehaviour
         type = newType;
         GetComponent<MeshFilter>().mesh = GameManager.instance.crater;
     }
-    public void ChangeMaterialToHover()
+    public void ChangeMaterialToHover(int type)
     {
-        GetComponent<Renderer>().material = GameManager.instance.hoverMaterial;
+        if (type == 0)
+            GetComponent<Renderer>().material = GameManager.instance.hoverMaterialNeutral;
+        else if (type == 1)
+            GetComponent<Renderer>().material = GameManager.instance.hoverMaterialGreen;
+        else if (type == 1)
+            GetComponent<Renderer>().material = GameManager.instance.hoverMaterialRed;
     }
     public void ResetMaterial()
     {

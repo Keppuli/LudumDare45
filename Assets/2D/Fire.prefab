@@ -57,6 +57,7 @@ MonoBehaviour:
   followCursor: 0
   originalPosition: {x: 0, y: 0, z: 0}
   type: 6
+  description: Fire element
 --- !u!222 &3356109791516851527
 CanvasRenderer:
   m_ObjectHideFlags: 0
