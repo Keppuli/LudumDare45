@@ -25,7 +25,22 @@ public class GameManager : MonoBehaviour
         else
             instance = this;
     }
-
+    public void ReplaceSector(GameObject oldSector, Sector.Type type)
+    {
+        for (int i = 0; i < sectors.Length; i++)
+        {
+            Debug.Log("ReplaceSector() iterating:  " + sectors[i].GetComponent<Sector>().type);
+            if (type == sectors[i].GetComponent<Sector>().type)
+            {
+                Debug.Log("Replacing:  " + oldSector + " with: "+ sectors[i]);
+                var insta = Instantiate(sectors[i], oldSector.transform.position, Quaternion.identity, GameObject.Find("World").transform);
+                insta.transform.rotation = oldSector.transform.rotation;
+                Destroy(oldSector);
+                return;
+            }
+        }
+        Debug.Log("ERROR: ReplaceSector() failed to replace sector of type: "+ type);
+    }
     public void CreateElementObject(Element.Type type, Vector2 position, bool newPosition)
     {
         Vector3 pos;
@@ -38,9 +53,8 @@ public class GameManager : MonoBehaviour
         {
             if (type == elements[i].GetComponent<Element>().type)
             {
-                Debug.Log("Matching prefab for Type:");
-                var insta = Instantiate(elements[i], pos, Quaternion.identity, GameObject.Find("Canvas").transform);
-                insta.transform.SetSiblingIndex(0);
+                //Debug.Log("Matching prefab for Type:");
+                var insta = Instantiate(elements[i], pos, Quaternion.identity, GameObject.Find("Elements").transform);
                 existingElements.Add(elements[i]);
             }
         }
@@ -55,6 +69,16 @@ public class GameManager : MonoBehaviour
         }
         return count;
     }
+    public int CheckSectorCount(Sector.Type type) // For tutorial game flow
+    {
+        int count = 0;
+        for (int i = 0; i < sectors.Length; i++)
+        {
+            if (type == sectors[i].GetComponent<Sector>().type)
+                count++;
+        }
+        return count;
+    }
 
     public void DestroyUIObject(GameObject obj)
     {
@@ -65,7 +89,6 @@ public class GameManager : MonoBehaviour
     public void EventTutorial()
     {
         ConsoleManager.instance.ChangeText("First there was nothing but a barren realm.");
-
     }
     public void EventMeteor(Vector3 position)
     {
@@ -73,7 +96,7 @@ public class GameManager : MonoBehaviour
         progression = Progression.Meteor;
 
         Debug.Log("Meteor event activated!");
-        ConsoleManager.instance.ChangeText("Comet brought something new to this barren land. Try mixing them up.");
+        ConsoleManager.instance.ChangeText("Comet brought new elements to this barren land. Try mixing them up.");
         CameraController.instance.shakeDuration = 1f;
         CreateElementObject(Element.Type.Fire, position,true);
         CreateElementObject(Element.Type.Water, position, true);
@@ -81,14 +104,24 @@ public class GameManager : MonoBehaviour
         Instantiate(dustPE, position, Quaternion.identity);
     }
 
-    public void EventLake(Vector3 position)
+    public void EventLake(GameObject sector)
     {
         //lake.GetComponent<Interactable>().enabled = false;
-        ConsoleManager.instance.ChangeText("Fire and water combine to form rainy clouds o");
+        ConsoleManager.instance.ChangeText("A lake has settled and started to form rain..");
         progression = Progression.Lake;
-        Instantiate(raincloudsPE, position, Quaternion.identity,GameObject.Find("World").transform);
+        var insta  = Instantiate(raincloudsPE, sector.transform.position, Quaternion.identity,GameObject.Find("World").transform);
+        insta.transform.rotation = sector.transform.rotation;
+
     }
 
+    public void EventRain(GameObject sector)
+    {
+        //lake.GetComponent<Interactable>().enabled = false;
+        ConsoleManager.instance.ChangeText("Rain nourishes the barren land..");
+        var insta = Instantiate(raincloudsPE, sector.transform.position, Quaternion.identity, GameObject.Find("World").transform);
+        insta.transform.rotation = sector.transform.rotation;
+
+    }
     public void EventFireToWater()
     {
        

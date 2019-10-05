@@ -40,7 +40,7 @@ public class MouseController : MonoBehaviour
     }
     public void UpdateMouseOverInfo()
     {
-        mouseOverInfo.transform.SetSiblingIndex(999); // Place at bottom of Canvas hiererchy to maintain on top position
+        //mouseOverInfo.transform.SetSiblingIndex(999); // Place at bottom of Canvas hiererchy to maintain on top position
 
         if (hoveredElement)
         {
@@ -94,9 +94,9 @@ public class MouseController : MonoBehaviour
     }
     void HoverObject(GameObject obj)
     {
-        Debug.Log("HoverObject() on: " + obj.name);
+        //Debug.Log("HoverObject() on: " + obj.name);
         obj.GetComponent<Sector>().PlayHoverSound();
-        obj.GetComponent<Sector>().DebugLog("MOUSEOVER");
+        //obj.GetComponent<Sector>().DebugLog("MOUSEOVER");
 
         if (hoveredSector)
         {
@@ -108,7 +108,7 @@ public class MouseController : MonoBehaviour
         hoveredSector = obj;
         if (!draggingElement)
             hoveredSector.GetComponent<Sector>().ChangeMaterialToHover(0);
-        Debug.Log(hoveredSector.GetComponent<Renderer>().material);
+        //Debug.Log(hoveredSector.GetComponent<Renderer>().material);
 
     }
     void ClearHover()

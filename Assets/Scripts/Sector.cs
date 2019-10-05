@@ -8,7 +8,7 @@ public class Sector : MonoBehaviour
     public AudioClip sfx_interact; // Hover over sound
     public bool audioPlayed = false;
     Material startingMaterial;
-    public enum Type { Sand, Crater, Lake, };
+    public enum Type { Sand, Crater, Lake, Grass};
     public Type type;
     public string description;
 
@@ -49,6 +49,7 @@ public class Sector : MonoBehaviour
     public void ChangeType(Type newType)
     {
         type = newType;
+
         GetComponent<MeshFilter>().mesh = GameManager.instance.crater;
     }
     public void ChangeMaterialToHover(int type)

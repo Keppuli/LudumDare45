@@ -27,6 +27,9 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (MouseController.instance.hoveredSector)
+            MouseController.instance.hoveredSector.GetComponent<Sector>().ResetMaterial();
+
         GetComponent<RectTransform>().localScale = new Vector3(1.2f, 1.2f, 1.2f);
         MouseController.instance.draggingElement = true;
         GetComponent<BoxCollider2D>().isTrigger = true;
@@ -79,19 +82,21 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
             {
                 if (!onlyCheck)
                 {
-                    sector.GetComponent<Sector>().ChangeType(Sector.Type.Crater);
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Crater);
                     GameManager.instance.EventMeteor(sector.transform.position);
                 }
                 return true;
             }
         }
-
         if (element == Type.Water)
         {
-            if (sector.tag == "Sand")
+            if (sectorType == Sector.Type.Crater)
             {
                 if (!onlyCheck)
-                    GameManager.instance.EventLake(sector.transform.position);
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Lake);
+                    GameManager.instance.EventLake(sector);
+                }
                 return true;
             }
         }
@@ -106,17 +111,15 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         }
         if (element == Type.Rain)
         {
-            if (sector.tag == "Water")
+        
+            if (sectorType == Sector.Type.Sand) //  && GameManager.instance.CheckSectorCount(Sector.Type.Crater) < 1
             {
-                if (sectorType == Sector.Type.Crater)
+                if (!onlyCheck)
                 {
-                    if (!onlyCheck)
-                    {
-                        sector.GetComponent<Sector>().ChangeType(Sector.Type.Lake);
-                        GameManager.instance.EventLake(sector.transform.position);
-                    }
-                    return true;
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Grass);
+                    GameManager.instance.EventRain(sector);
                 }
+                return true;
             }
         }
         // By default return false
@@ -130,21 +133,10 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         // Play sound when letting go of item
         //AudioManager.instance.InvItemPlaceSound(item.category, amount);
 #region UI Object
-        /*
-        if (eventData.pointerEnter) // Trash can functionality
-        {
-            //Debug.Log("OnEndDrag eventData.pointerEnter: "+ eventData.pointerEnter.name);
-            if (eventData.pointerEnter.name == "TrashCan")
-            {
-                Destroy(gameObject);
-                return;
-            }
-        }
-        */
         // Check if mouse over UI object
         if (MouseController.instance.hoveredElement)
         {
-            Debug.Log("Dragging on HoveredUiOBJ");
+            //Debug.Log("Dragging on HoveredUiOBJ");
 
             // Dragging on other UI object will combine the two if match OK
             var hoveredUIObject = MouseController.instance.hoveredElement;
@@ -164,7 +156,6 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
                 //Debug.Log("ERROR: Matching prefab for Type:"+combinedType + " not found!");
                 //Instantiate(); // Instantiate under Canvas
             }
-
         }
         else
             ReleaseWithCheck();
@@ -183,7 +174,6 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         {
             ReleaseWithCheck();
         }
- 
     }
     void ReleaseWithCheck()
     {
@@ -200,6 +190,9 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
     }
     public void ReleaseItem()
     {
+        if (MouseController.instance.hoveredSector)
+            MouseController.instance.hoveredSector.GetComponent<Sector>().ResetMaterial();
+
         GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
 
         GetComponent<BoxCollider2D>().isTrigger = false;
@@ -218,10 +211,13 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
     }
     public void OnDrag(PointerEventData eventData)
     {
-        if (ElementSectorCombiner(type, MouseController.instance.hoveredSector, true))
-            MouseController.instance.hoveredSector.GetComponent<Sector>().ChangeMaterialToHover(1); // yeas
-        else
-            MouseController.instance.hoveredSector.GetComponent<Sector>().ChangeMaterialToHover(2); // noes
+        if (MouseController.instance.hoveredSector)
+        {
+            if (ElementSectorCombiner(type, MouseController.instance.hoveredSector, true))
+                MouseController.instance.hoveredSector.GetComponent<Sector>().ChangeMaterialToHover(1); // yeas
+            else
+                MouseController.instance.hoveredSector.GetComponent<Sector>().ChangeMaterialToHover(2); // noes
+        }
     }
     Vector3 GetMidPoint(Vector3 a, Vector3 b)
     {
