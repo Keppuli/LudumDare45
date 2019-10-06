@@ -46,7 +46,7 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
 
         GetComponent<RectTransform>().localScale = new Vector3(1.2f, 1.2f, 1.2f);
         MouseController.instance.draggingElement = true;
-        GetComponent<BoxCollider2D>().isTrigger = true;
+        GetComponent<CircleCollider2D>().isTrigger = true;
 
         // Play pickup sound
         //AudioManager.instance.InvItemPickupSound(item.category, amount);
@@ -171,7 +171,7 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         }
         if (element == Type.Fire)
         {
-            if (sectorType == Sector.Type.Grass || sectorType == Sector.Type.Forest)
+            if (sectorType == Sector.Type.Grass || sectorType == Sector.Type.Forest || sectorType == Sector.Type.SteppeEcosystem || sectorType == Sector.Type.ForestEcosystem)
             {
                 if (!onlyCheck)
                 {
@@ -264,7 +264,16 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         }
         if (element == Type.Animals)
         {
-            if (sectorType == Sector.Type.Grass || sectorType == Sector.Type.Forest)
+            if (sectorType == Sector.Type.Grass)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.SteppeEcosystem);
+                    GameManager.instance.EventSteppe();
+                }
+                return true;
+            }
+            if (sectorType == Sector.Type.Forest)
             {
                 if (!onlyCheck)
                 {
@@ -310,7 +319,7 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         }
         if (element == Type.Tribe)
         {
-            if (sectorType != Sector.Type.Tribe || sectorType != Sector.Type.Kingdom || sectorType != Sector.Type.Civilization)
+            if (sectorType != Sector.Type.Tribe && sectorType != Sector.Type.Kingdom && sectorType != Sector.Type.Civilization)
             {
                 if (!onlyCheck)
                 {
@@ -319,13 +328,14 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
                 }
                 return true;
             }
+
         }
         if (element == Type.Nuke)
         {
             if (!onlyCheck)
             {
                 GameManager.instance.ReplaceSector(sector, Sector.Type.Crater);
-                GameManager.instance.EventNuke();
+                GameManager.instance.EventNuke(sector);
             }
             return true;
         }
@@ -395,7 +405,7 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
 
         GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 1f);
 
-        GetComponent<BoxCollider2D>().isTrigger = false;
+        GetComponent<CircleCollider2D>().isTrigger = false;
         followCursor = false;    // Release mouse follow
         GetComponent<CanvasGroup>().blocksRaycasts = true;      // Take raycast again
         MouseController.instance.heldItem = null;               // Release reference to held item

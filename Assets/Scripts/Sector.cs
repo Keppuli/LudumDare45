@@ -38,6 +38,7 @@ public class Sector : MonoBehaviour
 
     void GenerateElement()
     {
+
         if (type == Type.Lake)
         {
             CheckAndProduceElement(Element.Type.Water);
@@ -98,19 +99,22 @@ public class Sector : MonoBehaviour
 
             return;
         }
-        else if (type == Type.Tribe || type == Type.Kingdom || type == Type.Civilization)
+        else if (type == Type.Tribe || type == Type.Kingdom)
         {
             CheckAndProduceElement(Element.Type.Technology);
             CheckAndProduceElement(Element.Type.Sapients);
 
             return;
         }
-        else if ( type == Type.Civilization)
+        else if(type == Type.Civilization)
         {
+            Debug.Log("CIV");
+            CheckAndProduceElement(Element.Type.Technology);
+            CheckAndProduceElement(Element.Type.Sapients);
             CheckAndProduceElement(Element.Type.Nuke);
-
             return;
         }
+
     }
     void CheckAndProduceElement(Element.Type type)
     {

@@ -9,8 +9,11 @@ public class GameManager : MonoBehaviour
     public enum Progression { Meteor, Crater, Lake, Volcano };
     public Progression progression;
     public GameObject fireworksPE;
+    public GameObject hum;
+    public GameObject music;
+
     public float elementGenerationTime;
-    Vector2 elementUISpawnPosition = new Vector2(-453f, 320f);
+    Vector2 elementUISpawnPosition = new Vector2(-342f, 12f);
     public GameObject elementSectorSpawnRotator;
     public Material hoverMaterialNeutral;
     public Material hoverMaterialGreen;
@@ -24,7 +27,6 @@ public class GameManager : MonoBehaviour
     public List<GameObject> existingElements = new List<GameObject>(); // List of existing elements in the game world
 
     public float startTimer = 20f;
-    bool tutorialOn;
     private void Awake()
     {
         if (instance != null)
@@ -44,14 +46,13 @@ public class GameManager : MonoBehaviour
             {
                 CreateElementObject(Element.Type.Meteor, elementUISpawnPosition);
                 ConsoleManager.instance.ChangeText("But by happy accident a roque comet came by this barren realm..");
+                music.SetActive(true);
 
             }
             else if (startTimer < 15f && startTimer > 0f)
             {
                 ConsoleManager.instance.ChangeText("For a long time there was nothing..");
             }
-            
-
         }
 
         if (Input.GetKeyDown(KeyCode.F12))
@@ -61,6 +62,14 @@ public class GameManager : MonoBehaviour
                 CreateElementObject(element.GetComponent<Element>().type, elementUISpawnPosition);
             }
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+    private void LateUpdate()
+    {
+        hum.SetActive(true);
     }
     public void ReplaceSector(GameObject oldSector, Sector.Type type)
     {
@@ -140,7 +149,6 @@ public class GameManager : MonoBehaviour
     {
         existingElements.Remove(obj);
         Destroy(obj);
-     
     }
 
     public void EventMeteor(GameObject sector)
@@ -151,7 +159,6 @@ public class GameManager : MonoBehaviour
         CreateElementObject(Element.Type.Water, sector.transform.position, true, sector);
         CreateElementObject(Element.Type.Water, sector.transform.position, true, sector);
         InstantiatePE(dustPE, sector);
-
     }
     public void EventVolcano(GameObject sector)
     {
@@ -170,7 +177,7 @@ public class GameManager : MonoBehaviour
     #region Lake Progression
     public void EventLake(GameObject sector)
     {
-        ConsoleManager.instance.ChangeText("A lake has settled and is now producing water");
+        ConsoleManager.instance.ChangeText("A lake has settled and is now producing Water");
         //InstantiatePE(raincloudsPE, sector);
         // Progress 
         CreateElementObject(Element.Type.Volcano, elementUISpawnPosition);
@@ -182,13 +189,13 @@ public class GameManager : MonoBehaviour
     }
     public void EventLakeEcosystem(GameObject sector)
     {
-        ConsoleManager.instance.ChangeText("A lake has transformed into ecosystem and is now producing lifeforms");
+        ConsoleManager.instance.ChangeText("A lake has transformed into ecosystem and is now producing Lifeforms");
         //InstantiatePE(raincloudsPE, sector);
     }
     #endregion
     public void EventBurned()
     {
-        ConsoleManager.instance.ChangeText("Sector has burned down, producing coal");
+        ConsoleManager.instance.ChangeText("Sector has burned down and is now producing Coal");
         //InstantiatePE(raincloudsPE, sector);
 
     }
@@ -248,8 +255,9 @@ public class GameManager : MonoBehaviour
 
         }
     }
-    public void EventNuke()
+    public void EventNuke(GameObject sector)
     {
+        InstantiatePE(dustPE, sector);
         FMODUnity.RuntimeManager.PlayOneShot("event:/Nuked");
         ConsoleManager.instance.ChangeText("Oh humanity!");
         //InstantiatePE(raincloudsPE, sector);
