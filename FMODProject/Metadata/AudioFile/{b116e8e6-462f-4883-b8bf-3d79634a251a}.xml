@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{b116e8e6-462f-4883-b8bf-3d79634a251a}">
+		<property name="assetPath">
+			<value>ZOOM0012.WAV</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>74.267573696145121</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{0f64835a-6d55-4ac0-8288-22c475e59a4b}</destination>
+		</relationship>
+	</object>
+</objects>

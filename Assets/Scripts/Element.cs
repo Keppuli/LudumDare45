@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler //IPointerClickHandler? 
+public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler 
 {
     //public Item item;              
     public GameObject textObj;
     public bool followCursor;
     public Vector3 originalPosition;
-    public enum Type {None, NoMatch, Meteor, Water, Sand, Earth, Fire, Coal, Rain}
+    public enum Type {None, NoMatch, Meteor, Water, Sand, Earth, Fire, Wood,Coal, Rain, Volcano, Seeds, Life, Animals, Tribe, Monolith, Sapients,Technology }
     public Type type;
     public string description;
 
@@ -46,11 +46,13 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
             // Pick up the UI item
             MouseController.instance.heldItem = gameObject;
             followCursor = true;
-            // Make sure clicks are not blocked when holding the item, for mouse overs etc not to react.
             GetComponent<CanvasGroup>().blocksRaycasts = false;
         }
         else
+        {
             Debug.Log("DEBUG: Trying to take new obj somehow with already holding one.");
+            ReturnElement();
+        }
     }
 
     Type ElementCombiner(Type a, Type b)
@@ -60,17 +62,51 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         if (a == b) // We are not combining indentical elements
             return Type.NoMatch;
 
-        else if (a == Type.Water)
+        if (a == Type.Water)
         {
             if (b == Type.Fire)
                 return Type.Rain;
         }
-        else if (b == Type.Water)
+        if (b == Type.Water)
         {
             if (a == Type.Fire)
                 return Type.Rain;
         }
+        if (a == Type.Coal)
+        {
+            Debug.Log("A Coal found");
+            if (b == Type.Water)
+                return Type.Life;
+        }
+        if (b == Type.Coal)
+        {
+            Debug.Log("B Coal found");
+
+            if (a == Type.Water)
+                return Type.Life;
+        }
+        else if (a == Type.Wood)
+        {
+            if (b == Type.Fire)
+                return Type.Coal;
+        }
+        else if (b == Type.Wood)
+        {
+            if (a == Type.Fire)
+                return Type.Coal;
+        }
+        else if (a == Type.Sapients)
+        {
+            if (b == Type.Technology)
+                return Type.Tribe;
+        }
+        else if (b == Type.Sapients)
+        {
+            if (a == Type.Technology)
+                return Type.Tribe;
+        }
         // By default return no match
+        Debug.Log("DEBUG: No Match for: "+a);
         return Type.NoMatch;
     }
     bool ElementSectorCombiner(Type element, GameObject sector, bool onlyCheck)
@@ -83,7 +119,28 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
                 if (!onlyCheck)
                 {
                     GameManager.instance.ReplaceSector(sector, Sector.Type.Crater);
-                    GameManager.instance.EventMeteor(sector.transform.position);
+                    GameManager.instance.EventMeteor(sector);
+                }
+                return true;
+            }
+        }
+        if (element == Type.Volcano)
+        {
+            if (sectorType == Sector.Type.Sand)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Volcano);
+                    GameManager.instance.EventVolcano(sector);
+                }
+                return true;
+            }
+            if (sectorType == Sector.Type.Grass)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Volcano);
+                    GameManager.instance.EventVolcano(sector);
                 }
                 return true;
             }
@@ -102,17 +159,32 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         }
         if (element == Type.Fire)
         {
-            if (sector.tag == "Water")
+            if (sectorType == Sector.Type.Grass || sectorType == Sector.Type.Forest)
             {
                 if (!onlyCheck)
-                    GameManager.instance.EventFireToWater();
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Burned);
+                    GameManager.instance.EventBurned();
+                }
+                return true;
+            }
+        }
+        if (element == Type.Coal)
+        {
+            if (sectorType == Sector.Type.Grass || sectorType == Sector.Type.Forest)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Burned);
+                    GameManager.instance.EventBurned();
+                }
                 return true;
             }
         }
         if (element == Type.Rain)
         {
         
-            if (sectorType == Sector.Type.Sand) //  && GameManager.instance.CheckSectorCount(Sector.Type.Crater) < 1
+            if (sectorType == Sector.Type.Sand || sectorType == Sector.Type.Burned)
             {
                 if (!onlyCheck)
                 {
@@ -122,6 +194,131 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
                 return true;
             }
         }
+        if (element == Type.Seeds)
+        {
+            if (sectorType == Sector.Type.Lake) 
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.LakeSeeded);
+                    GameManager.instance.EventSeededLake(sector);
+                }
+                return true;
+            }
+            if (sectorType == Sector.Type.Grass)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Forest);
+                    GameManager.instance.EventForest();
+                }
+                return true;
+
+            }
+        }
+        if (element == Type.Seeds)
+        {
+            if (sectorType == Sector.Type.Grass) 
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Forest);
+                    GameManager.instance.EventForest();
+                }
+                return true;
+            }
+        }
+        if (element == Type.Life)
+        {
+            if (sectorType == Sector.Type.Forest)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.ForestEcosystem);
+                    GameManager.instance.EventForestEcosystem();
+                }
+                return true;
+            }
+            if (sectorType == Sector.Type.LakeSeeded)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.LakeEcosystem);
+                    GameManager.instance.EventLakeEcosystem(sector);
+                }
+                return true;
+            }
+        }
+        if (element == Type.Monolith)
+        {
+            if (sectorType == Sector.Type.Forest)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Sapients);
+                    GameManager.instance.EventSapients();
+                }
+                return true;
+            }
+        }
+        if (element == Type.Animals)
+        {
+            if (sectorType == Sector.Type.Grass)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.SteppeEcosystem);
+                    GameManager.instance.EventSteppe();
+                }
+                return true;
+            }
+        }
+        if (element == Type.Sapients)
+        {
+            if (sectorType == Sector.Type.SteppeEcosystem)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Tribe);
+                    GameManager.instance.EventTribe();
+                }
+                return true;
+            }
+        }
+        if (element == Type.Technology)
+        {
+            if (sectorType == Sector.Type.Tribe)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Kingdom);
+                    GameManager.instance.EventKingdom();
+                }
+                return true;
+            }
+            if (sectorType == Sector.Type.Kingdom)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Civilization);
+                    GameManager.instance.EventCivilization();
+                }
+                return true;
+            }
+        }
+        if (element == Type.Tribe)
+        {
+            if (sectorType != Sector.Type.Tribe || sectorType != Sector.Type.Kingdom || sectorType != Sector.Type.Civilization)
+            {
+                if (!onlyCheck)
+                {
+                    GameManager.instance.ReplaceSector(sector, Sector.Type.Tribe);
+                    GameManager.instance.EventTribeForced();
+                }
+                return true;
+            }
+        }
+
         // By default return false
         return false;
     }
@@ -147,11 +344,9 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
                 Debug.Log("Combining to: " + combinedType);
                 // Destroy original UI objects and create new
                 combinePosition = GetMidPoint(transform.position, hoveredUIObject.transform.position);
-
-                GameManager.instance.CreateElementObject(combinedType, combinePosition, false);
-
-                GameManager.instance.DestroyUIObject(gameObject);
-                GameManager.instance.DestroyUIObject(MouseController.instance.hoveredElement);
+                GameManager.instance.CreateElementObject(combinedType, combinePosition, false,null);
+                GameManager.instance.DestroyElement(gameObject);
+                GameManager.instance.DestroyElement(MouseController.instance.hoveredElement);
 
                 //Debug.Log("ERROR: Matching prefab for Type:"+combinedType + " not found!");
                 //Instantiate(); // Instantiate under Canvas
@@ -159,17 +354,14 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         }
         else
             ReleaseWithCheck();
-
 #endregion
 #region 3D Object
         if (MouseController.instance.hoveredSector)
         {
-            if (ElementSectorCombiner(type, MouseController.instance.hoveredSector,false)) // Activates matching event
-                Destroy(gameObject);
-
+            if (ElementSectorCombiner(type, MouseController.instance.hoveredSector, false)) // Activates matching event
+                GameManager.instance.DestroyElement(gameObject);
         }
 #endregion
-
         else
         {
             ReleaseWithCheck();
@@ -178,17 +370,17 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
     void ReleaseWithCheck()
     {
         if (MouseController.instance.CheckMouseBounds())
-            ReleaseItem();
+            ReleaseElement();
         else
-            ReturnItem();
+            ReturnElement();
     }
 
-    public void ReturnItem() // For returning UI Obj to pickup position
+    public void ReturnElement() // For returning UI Obj to pickup position
     {
         GetComponent<RectTransform>().transform.position = originalPosition;
-        ReleaseItem();
+        ReleaseElement();
     }
-    public void ReleaseItem()
+    public void ReleaseElement()
     {
         if (MouseController.instance.hoveredSector)
             MouseController.instance.hoveredSector.GetComponent<Sector>().ResetMaterial();
@@ -217,6 +409,8 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
                 MouseController.instance.hoveredSector.GetComponent<Sector>().ChangeMaterialToHover(1); // yeas
             else
                 MouseController.instance.hoveredSector.GetComponent<Sector>().ChangeMaterialToHover(2); // noes
+
+            //Debug.Log("Check on element: "+type+ " against: "+ MouseController.instance.hoveredSector.GetComponent<Sector>().type + " is fit: "+ ElementSectorCombiner(type, MouseController.instance.hoveredSector, true));
         }
     }
     Vector3 GetMidPoint(Vector3 a, Vector3 b)

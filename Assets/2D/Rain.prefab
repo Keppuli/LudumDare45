@@ -56,7 +56,7 @@ MonoBehaviour:
   textObj: {fileID: 0}
   followCursor: 0
   originalPosition: {x: 0, y: 0, z: 0}
-  type: 8
+  type: 9
   description: Rain can rejuvenate almost everything
 --- !u!222 &6421923176785955428
 CanvasRenderer:

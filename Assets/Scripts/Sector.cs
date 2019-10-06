@@ -8,15 +8,15 @@ public class Sector : MonoBehaviour
     public AudioClip sfx_interact; // Hover over sound
     public bool audioPlayed = false;
     Material startingMaterial;
-    public enum Type { Sand, Crater, Lake, Grass};
+    public enum Type { Sand, Crater, Lake, Grass, Volcano, Forest, Burned, LakeSeeded, LakeEcosystem,ForestEcosystem,SteppeEcosystem, Sapients, Tribe,Kingdom,Civilization  };
     public Type type;
     public string description;
-
-    public float generateTime = 20f;
-    public float generateTimer = 20f;
+    public float generateTimer;
 
     void Start()
     {
+        generateTimer = GameManager.instance.elementGenerationTime;
+
         startingMaterial = GetComponent<Renderer>().material;
         //audioSource = GetComponent<AudioSource>();
         if (!GetComponent<BoxCollider>())
@@ -31,7 +31,7 @@ public class Sector : MonoBehaviour
             if (generateTimer <= 0f)
             {
                 GenerateElement();
-                generateTimer = generateTime;
+                generateTimer = GameManager.instance.elementGenerationTime;
             }
         }
     }
@@ -40,18 +40,66 @@ public class Sector : MonoBehaviour
     {
         if (type == Type.Lake)
         {
-            if (GameManager.instance.CheckElementObjectCount(Element.Type.Rain) < 1)
-                GameManager.instance.CreateElementObject(Element.Type.Rain, transform.position, true);
+            CheckAndProduceElement(Element.Type.Water);
+            return;
+        }
+        else if (type == Type.LakeSeeded)
+        {
+            CheckAndProduceElement(Element.Type.Water);
+            return;
+        }
+        else if (type == Type.LakeEcosystem)
+        {
+            CheckAndProduceElement(Element.Type.Life);
+            CheckAndProduceElement(Element.Type.Water);
+            return;
+        }
+        else if (type == Type.Volcano)
+        {
+            CheckAndProduceElement(Element.Type.Fire);
+            return;
+        }
+        else if (type == Type.Burned)
+        {
+            CheckAndProduceElement(Element.Type.Coal);
+            return;
+        }
+        else if (type == Type.Grass)
+        {
+            CheckAndProduceElement(Element.Type.Seeds);
+            return;
+        }
+        else if (type == Type.Forest)
+        {
+            CheckAndProduceElement(Element.Type.Wood);
+            return;
+        }
+        else if (type == Type.ForestEcosystem)
+        {
+            CheckAndProduceElement(Element.Type.Animals);
+            return;
+        }
+        else if (type == Type.SteppeEcosystem)
+        {
+            CheckAndProduceElement(Element.Type.Animals);
+            return;
+        }
+        else if (type == Type.Tribe || type == Type.Kingdom || type == Type.Civilization)
+        {
+            CheckAndProduceElement(Element.Type.Technology);
+            CheckAndProduceElement(Element.Type.Sapients);
+
             return;
         }
     }
-
-    public void ChangeType(Type newType)
+    void CheckAndProduceElement(Element.Type type)
     {
-        type = newType;
-
-        GetComponent<MeshFilter>().mesh = GameManager.instance.crater;
+        if (GameManager.instance.CheckElementObjectCount(type) < 1)
+            GameManager.instance.CreateElementObject(type, transform.position, true, gameObject);
+        else
+            Debug.Log("Trying to produce element:"+type+" but there exist enough.");
     }
+
     public void ChangeMaterialToHover(int type)
     {
         if (type == 0)
