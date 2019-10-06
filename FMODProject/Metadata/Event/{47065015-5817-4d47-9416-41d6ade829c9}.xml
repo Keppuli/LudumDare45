@@ -95,9 +95,6 @@
 		<property name="timelockedOffset">
 			<value>57</value>
 		</property>
-		<relationship name="fadeInCurve">
-			<destination>{87bafb26-1229-403d-af07-e69807ff37c4}</destination>
-		</relationship>
 		<relationship name="fadeOutCurve">
 			<destination>{bfdad50f-9c2c-4440-9e24-56532d50f881}</destination>
 		</relationship>
@@ -129,14 +126,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{a748b222-1ab4-4b41-aeb4-f1de19ea5e98}" />
 	<object class="MixerBusFader" id="{0ee12b5a-8022-4457-86c6-21f758a3a54a}" />
-	<object class="FadeCurve" id="{87bafb26-1229-403d-af07-e69807ff37c4}">
-		<relationship name="startPoint">
-			<destination>{54cf0925-03cd-46d6-a412-1f9976bc5bfe}</destination>
-		</relationship>
-		<relationship name="endPoint">
-			<destination>{cdd2f95d-6f9b-428c-801d-a521adc1a0bf}</destination>
-		</relationship>
-	</object>
 	<object class="FadeCurve" id="{bfdad50f-9c2c-4440-9e24-56532d50f881}">
 		<relationship name="startPoint">
 			<destination>{d377aa73-cdf0-4292-8b74-d54172be116f}</destination>
@@ -152,34 +141,15 @@
 	</object>
 	<object class="MixerBusPanner" id="{7aef57ed-e256-4ce6-ad87-6d11e214582a}" />
 	<object class="MixerBusFader" id="{bbc9f8c5-726b-47e6-b56c-a401363c965a}" />
-	<object class="AutomationPoint" id="{54cf0925-03cd-46d6-a412-1f9976bc5bfe}">
-		<property name="position">
-			<value>0</value>
-		</property>
-		<property name="value">
-			<value>0</value>
-		</property>
-		<property name="curveShape">
-			<value>-0.2547189</value>
-		</property>
-	</object>
-	<object class="AutomationPoint" id="{cdd2f95d-6f9b-428c-801d-a521adc1a0bf}">
-		<property name="position">
-			<value>0.95000000000000007</value>
-		</property>
-		<property name="value">
-			<value>1</value>
-		</property>
-	</object>
 	<object class="AutomationPoint" id="{d377aa73-cdf0-4292-8b74-d54172be116f}">
 		<property name="position">
-			<value>1</value>
+			<value>0.050000000000000003</value>
 		</property>
 		<property name="value">
 			<value>1</value>
 		</property>
 		<property name="curveShape">
-			<value>0.25471893</value>
+			<value>-0.186766088</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{a13bcf3f-5322-4700-a8bf-5576e6270d86}">

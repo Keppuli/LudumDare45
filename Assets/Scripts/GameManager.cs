@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public Material hoverMaterialRed;
     public GameObject dustPE;
     public GameObject raincloudsPE;
-
+    public bool monolithSpawned;
     public GameObject[] sectors; // Array of different possibilities
     public GameObject[] elements; // Array of different possibilities
 
@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
         else
             instance = this;
     }
+
     private void Start()
     {
         CreateElementObject(Element.Type.Meteor, elementUISpawnPosition);
@@ -185,6 +186,11 @@ public class GameManager : MonoBehaviour
     {
         ConsoleManager.instance.ChangeText("Forest ecosystem has formed and is now producing Animals");
         //InstantiatePE(raincloudsPE, sector);
+        if (!monolithSpawned)
+        {
+            CreateElementObject(Element.Type.Monolith, elementUISpawnPosition);
+            monolithSpawned = true;
+        }
     }
     public void EventSapients()
     {
@@ -216,6 +222,11 @@ public class GameManager : MonoBehaviour
     {
         ConsoleManager.instance.ChangeText("Technology is advancing");
         //InstantiatePE(raincloudsPE, sector);
+        Debug.Log("Civ count: "+ CheckSectorCount(Sector.Type.Civilization));
+        if (CheckSectorCount(Sector.Type.Civilization) == 8)
+        {
+            ConsoleManager.instance.ChangeText("Sapients have conquered all living space and formed Ecumenopolis. You win!");
+        }
     }
     public void EventBurn()
     {

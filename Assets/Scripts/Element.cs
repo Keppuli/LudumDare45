@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using FMOD;
 
 public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler 
 {
@@ -25,8 +26,20 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
             transform.position = Input.mousePosition;
     }
 
+
+    void PlayPickUpSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Pick");
+    }
+    void PlayDropSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Drop" +
+            "");
+    }
     public void OnBeginDrag(PointerEventData eventData)
     {
+        PlayPickUpSound();
+
         if (MouseController.instance.hoveredSector)
             MouseController.instance.hoveredSector.GetComponent<Sector>().ResetMaterial();
 
@@ -50,14 +63,14 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         }
         else
         {
-            Debug.Log("DEBUG: Trying to take new obj somehow with already holding one.");
+            //Debug.Log("DEBUG: Trying to take new obj somehow with already holding one.");
             ReturnElement();
         }
     }
 
     Type ElementCombiner(Type a, Type b)
     {
-        Debug.Log("Checking match for: "+ a +" & "+ b);
+        //Debug.Log("Checking match for: "+ a +" & "+ b);
 
         if (a == b) // We are not combining indentical elements
             return Type.NoMatch;
@@ -74,14 +87,11 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         }
         if (a == Type.Coal)
         {
-            Debug.Log("A Coal found");
             if (b == Type.Water)
                 return Type.Life;
         }
         if (b == Type.Coal)
         {
-            Debug.Log("B Coal found");
-
             if (a == Type.Water)
                 return Type.Life;
         }
@@ -106,7 +116,7 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
                 return Type.Tribe;
         }
         // By default return no match
-        Debug.Log("DEBUG: No Match for: "+a);
+        //Debug.Log("DEBUG: No Match for: "+a);
         return Type.NoMatch;
     }
     bool ElementSectorCombiner(Type element, GameObject sector, bool onlyCheck)
@@ -169,18 +179,7 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
                 return true;
             }
         }
-        if (element == Type.Coal)
-        {
-            if (sectorType == Sector.Type.Grass || sectorType == Sector.Type.Forest)
-            {
-                if (!onlyCheck)
-                {
-                    GameManager.instance.ReplaceSector(sector, Sector.Type.Burned);
-                    GameManager.instance.EventBurned();
-                }
-                return true;
-            }
-        }
+  
         if (element == Type.Rain)
         {
         
@@ -251,7 +250,7 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         }
         if (element == Type.Monolith)
         {
-            if (sectorType == Sector.Type.Forest)
+            if (sectorType == Sector.Type.ForestEcosystem)
             {
                 if (!onlyCheck)
                 {
@@ -326,9 +325,7 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
     public void OnEndDrag(PointerEventData eventData)
     {
         MouseController.instance.draggingElement = false;
-
-        // Play sound when letting go of item
-        //AudioManager.instance.InvItemPlaceSound(item.category, amount);
+        PlayDropSound();
 #region UI Object
         // Check if mouse over UI object
         if (MouseController.instance.hoveredElement)
@@ -341,7 +338,7 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
             Vector2 combinePosition;
             if (combinedType != Type.NoMatch)
             {
-                Debug.Log("Combining to: " + combinedType);
+                //Debug.Log("Combining to: " + combinedType);
                 // Destroy original UI objects and create new
                 combinePosition = GetMidPoint(transform.position, hoveredUIObject.transform.position);
                 GameManager.instance.CreateElementObject(combinedType, combinePosition, false,null);

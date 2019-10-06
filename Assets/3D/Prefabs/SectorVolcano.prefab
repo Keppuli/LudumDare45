@@ -4899,6 +4899,7 @@ GameObject:
   - component: {fileID: 663396829518841863}
   - component: {fileID: 4537114356785826499}
   - component: {fileID: 6482002411538505540}
+  - component: {fileID: 2842382859215697261}
   m_Layer: 0
   m_Name: SectorVolcano
   m_TagString: Untagged
@@ -4986,6 +4987,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &2842382859215697261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4537114356785826496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  Event: event:/Explode
+  PlayEvent: 1
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0
+  OverrideMaxDistance: 0
 --- !u!1 &6872659456206467835
 GameObject:
   m_ObjectHideFlags: 0

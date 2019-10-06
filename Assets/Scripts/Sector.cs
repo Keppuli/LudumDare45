@@ -79,6 +79,12 @@ public class Sector : MonoBehaviour
             CheckAndProduceElement(Element.Type.Animals);
             return;
         }
+        else if (type == Type.Sapients)
+        {
+            CheckAndProduceElement(Element.Type.Sapients);
+            return;
+        }
+
         else if (type == Type.SteppeEcosystem)
         {
             CheckAndProduceElement(Element.Type.Animals);

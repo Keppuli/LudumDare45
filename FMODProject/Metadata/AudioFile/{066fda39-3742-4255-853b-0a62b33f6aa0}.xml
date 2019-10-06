@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{066fda39-3742-4255-853b-0a62b33f6aa0}">
+		<property name="assetPath">
+			<value>moo.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>2.0319375000000002</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{0f64835a-6d55-4ac0-8288-22c475e59a4b}</destination>
+		</relationship>
+	</object>
+</objects>
