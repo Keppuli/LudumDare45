@@ -128,7 +128,7 @@ MonoBehaviour:
   sfx_interact: {fileID: 0}
   audioPlayed: 0
   type: 7
-  description: Lake with plantlife
+  description: Lake with plantlife, ready for lifeforms
   generateTimer: 0
 --- !u!33 &8383924538135831771
 MeshFilter:

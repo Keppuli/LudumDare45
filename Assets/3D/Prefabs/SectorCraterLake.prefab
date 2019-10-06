@@ -223,7 +223,7 @@ MonoBehaviour:
   sfx_interact: {fileID: 0}
   audioPlayed: 0
   type: 2
-  description: Lake, generating water
+  description: Lake, producing water
   generateTimer: 0
 --- !u!33 &8384484950058300458
 MeshFilter:

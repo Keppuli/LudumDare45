@@ -4948,7 +4948,7 @@ MonoBehaviour:
   sfx_interact: {fileID: 0}
   audioPlayed: 0
   type: 4
-  description: Active volcano generating fire
+  description: Active volcano, producing fire
   generateTimer: 0
 --- !u!23 &6482002411538505540
 MeshRenderer:

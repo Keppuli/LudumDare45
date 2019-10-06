@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{6e781c0f-5b43-4a44-bc8e-ffa4d9b4bcf3}">
+		<property name="assetPath">
+			<value>crowd.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>1.0100625000000001</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{0f64835a-6d55-4ac0-8288-22c475e59a4b}</destination>
+		</relationship>
+	</object>
+</objects>

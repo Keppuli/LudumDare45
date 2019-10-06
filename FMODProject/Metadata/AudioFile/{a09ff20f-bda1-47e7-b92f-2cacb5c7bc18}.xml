@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{a09ff20f-bda1-47e7-b92f-2cacb5c7bc18}">
+		<property name="assetPath">
+			<value>fireworks.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>6.5015833333333335</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{0f64835a-6d55-4ac0-8288-22c475e59a4b}</destination>
+		</relationship>
+	</object>
+</objects>

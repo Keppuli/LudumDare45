@@ -94,7 +94,7 @@ MonoBehaviour:
   sfx_interact: {fileID: 0}
   audioPlayed: 0
   type: 1
-  description: Crater left by a comet hit
+  description: Nasty crater
   generateTimer: 20
 --- !u!1 &2105467902590368906
 GameObject:
@@ -182,10 +182,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4838789888169707385}
-  - component: {fileID: 3093916056802393425}
   - component: {fileID: 3729132219691526293}
   - component: {fileID: 7341154715587521389}
-  - component: {fileID: 8074089944233211928}
+  - component: {fileID: 5287518598727654374}
   - component: {fileID: 885161462571759299}
   m_Layer: 0
   m_Name: SectorCrater
@@ -206,26 +205,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 842737834336330531}
+  - {fileID: 2327184981550951903}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3093916056802393425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3093916056802393426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0f9d17ba0e06a346bd3efa2acb7a314, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sfx_interact: {fileID: 0}
-  audioPlayed: 0
-  type: 1
-  description: Sector with a crater
-  generateTimer: 0
 --- !u!33 &3729132219691526293
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -271,20 +254,23 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &8074089944233211928
-MeshCollider:
+--- !u!114 &5287518598727654374
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3093916056802393426}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: -5511996699474248536, guid: b3a4a62a5605d0046bdaa0901e28e20a, type: 3}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0f9d17ba0e06a346bd3efa2acb7a314, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfx_interact: {fileID: 0}
+  audioPlayed: 0
+  type: 1
+  description: Nasty crater
+  generateTimer: 0
 --- !u!114 &885161462571759299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,3 +294,93 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 0
   OverrideMaxDistance: 0
+--- !u!1001 &2685023071369721392
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4838789888169707385}
+    m_Modifications:
+    - target: {fileID: 362764245551520744, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: m_Name
+      value: DustPE
+      objectReference: {fileID: 0}
+    - target: {fileID: 362764245551520751, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 362764245551520751, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 362764245551520751, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 362764245551520751, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 362764245551520751, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 362764245551520751, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 362764245551520751, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362764245551520751, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362764245551520751, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 362764245551520751, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 362764245551520751, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2324632946209405926, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.4528302
+      objectReference: {fileID: 0}
+    - target: {fileID: 2324632946209405926, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.40797436
+      objectReference: {fileID: 0}
+    - target: {fileID: 2324632946209405926, guid: 43d2709a389356d42867d1e3669b10fd,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.40797436
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 43d2709a389356d42867d1e3669b10fd, type: 3}
+--- !u!4 &2327184981550951903 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 362764245551520751, guid: 43d2709a389356d42867d1e3669b10fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 2685023071369721392}
+  m_PrefabAsset: {fileID: 0}

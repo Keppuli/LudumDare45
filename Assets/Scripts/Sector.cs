@@ -72,28 +72,42 @@ public class Sector : MonoBehaviour
         else if (type == Type.Forest)
         {
             CheckAndProduceElement(Element.Type.Wood);
+            CheckAndProduceElement(Element.Type.Seeds);
+
             return;
         }
         else if (type == Type.ForestEcosystem)
         {
             CheckAndProduceElement(Element.Type.Animals);
+            CheckAndProduceElement(Element.Type.Wood);
+
             return;
         }
         else if (type == Type.Sapients)
         {
             CheckAndProduceElement(Element.Type.Sapients);
+            CheckAndProduceElement(Element.Type.Wood);
+
             return;
         }
 
         else if (type == Type.SteppeEcosystem)
         {
             CheckAndProduceElement(Element.Type.Animals);
+            CheckAndProduceElement(Element.Type.Seeds);
+
             return;
         }
         else if (type == Type.Tribe || type == Type.Kingdom || type == Type.Civilization)
         {
             CheckAndProduceElement(Element.Type.Technology);
             CheckAndProduceElement(Element.Type.Sapients);
+
+            return;
+        }
+        else if ( type == Type.Civilization)
+        {
+            CheckAndProduceElement(Element.Type.Nuke);
 
             return;
         }

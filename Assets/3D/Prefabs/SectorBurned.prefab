@@ -50,7 +50,7 @@ MonoBehaviour:
   sfx_interact: {fileID: 0}
   audioPlayed: 0
   type: 6
-  description: Burned Sector producing coal
+  description: Burned Sector, producing coal
   generateTimer: 0
 --- !u!33 &6727201144637980635
 MeshFilter:

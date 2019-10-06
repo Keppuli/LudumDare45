@@ -49,7 +49,7 @@ MonoBehaviour:
   sfx_interact: {fileID: 0}
   audioPlayed: 0
   type: 3
-  description: Sector with grass
+  description: Grass, producing seeds
   generateTimer: 0
 --- !u!33 &9176976962720234772
 MeshFilter:

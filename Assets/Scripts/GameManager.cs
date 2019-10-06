@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMOD;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public enum Progression { Meteor, Crater, Lake, Volcano };
     public Progression progression;
+    public GameObject fireworksPE;
     public float elementGenerationTime;
     Vector2 elementUISpawnPosition = new Vector2(-453f, 320f);
     public GameObject elementSectorSpawnRotator;
@@ -18,9 +20,11 @@ public class GameManager : MonoBehaviour
     public bool monolithSpawned;
     public GameObject[] sectors; // Array of different possibilities
     public GameObject[] elements; // Array of different possibilities
-
+    public List<GameObject> existingSectors = new List<GameObject>(); // List of existing sectors in the game world
     public List<GameObject> existingElements = new List<GameObject>(); // List of existing elements in the game world
-    
+
+    public float startTimer = 20f;
+    bool tutorialOn;
     private void Awake()
     {
         if (instance != null)
@@ -29,13 +33,28 @@ public class GameManager : MonoBehaviour
             instance = this;
     }
 
-    private void Start()
-    {
-        CreateElementObject(Element.Type.Meteor, elementUISpawnPosition);
-    }
+
     private void Update()
     {
-        if (Input.GetKeyDown("space"))
+        if (startTimer > 0f)
+        {
+            startTimer -= Time.deltaTime;
+            // After 5 sec start to fade
+            if (startTimer <= 0f)
+            {
+                CreateElementObject(Element.Type.Meteor, elementUISpawnPosition);
+                ConsoleManager.instance.ChangeText("But by happy accident a roque comet came by this barren realm..");
+
+            }
+            else if (startTimer < 15f && startTimer > 0f)
+            {
+                ConsoleManager.instance.ChangeText("For a long time there was nothing..");
+            }
+            
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.F12))
         {
             foreach (var element in elements)
             {
@@ -52,11 +71,13 @@ public class GameManager : MonoBehaviour
             {
                 var insta = Instantiate(sectors[i], oldSector.transform.position, Quaternion.identity, GameObject.Find("World").transform);
                 insta.transform.rotation = oldSector.transform.rotation;
+                existingSectors.Remove(oldSector);
+                existingSectors.Add(insta);
                 Destroy(oldSector);
                 return;
             }
         }
-        Debug.Log("ERROR: ReplaceSector() failed to replace sector of type: "+ type);
+        //Debug.Log("ERROR: ReplaceSector() failed to replace sector of type: "+ type);
     }
     public void CreateElementObject(Element.Type type, Vector2 canvasPos)
     {
@@ -70,11 +91,11 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
-        Debug.Log("CreateElementObject() failed to find needed element to spawn! Check GameManager list for element; " + type);
+        //Debug.Log("CreateElementObject() failed to find needed element to spawn! Check GameManager list for element; " + type);
     }
     public void CreateElementObject(Element.Type type, Vector2 position, bool convertToWorldPos, GameObject sector)
     {
-        Debug.Log("Creating element: "+type);
+        //Debug.Log("Creating element: "+type);
         Vector3 pos = position; // Directly spawned and merged elements use Canvas position
 
         if (convertToWorldPos) // Sector spawning needs converted world pos
@@ -92,7 +113,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
-        Debug.Log("CreateElementObject() failed to find needed element to spawn! Check GameManager list for element; "+ type);
+        //Debug.Log("CreateElementObject() failed to find needed element to spawn! Check GameManager list for element; "+ type);
     }
     public int CheckElementObjectCount(Element.Type type) // Avoid sectors spamming too many objects
     {
@@ -107,9 +128,9 @@ public class GameManager : MonoBehaviour
     public int CheckSectorCount(Sector.Type type) // For tutorial game flow
     {
         int count = 0;
-        for (int i = 0; i < sectors.Length; i++)
+        for (int i = 0; i < existingSectors.Count; i++)
         {
-            if (type == sectors[i].GetComponent<Sector>().type)
+            if (type == existingSectors[i].GetComponent<Sector>().type)
                 count++;
         }
         return count;
@@ -122,13 +143,9 @@ public class GameManager : MonoBehaviour
      
     }
 
-    public void EventTutorial()
-    {
-        ConsoleManager.instance.ChangeText("First there was nothing but a barren realm.");
-    }
     public void EventMeteor(GameObject sector)
     {
-        ConsoleManager.instance.ChangeText("Comet brought new elements to this barren land. Try mixing them up.");
+        ConsoleManager.instance.ChangeText("Comet brought new elements. Things that could mixed and form even more new things..");
         CameraController.instance.shakeDuration = 1f;
         CreateElementObject(Element.Type.Fire, sector.transform.position, true, sector);
         CreateElementObject(Element.Type.Water, sector.transform.position, true, sector);
@@ -153,7 +170,6 @@ public class GameManager : MonoBehaviour
     #region Lake Progression
     public void EventLake(GameObject sector)
     {
-        progression = Progression.Lake;
         ConsoleManager.instance.ChangeText("A lake has settled and is now producing water");
         //InstantiatePE(raincloudsPE, sector);
         // Progress 
@@ -222,11 +238,21 @@ public class GameManager : MonoBehaviour
     {
         ConsoleManager.instance.ChangeText("Technology is advancing");
         //InstantiatePE(raincloudsPE, sector);
-        Debug.Log("Civ count: "+ CheckSectorCount(Sector.Type.Civilization));
+        //Debug.Log("Civ count: "+ CheckSectorCount(Sector.Type.Civilization));
         if (CheckSectorCount(Sector.Type.Civilization) == 8)
         {
+            fireworksPE.SetActive(true);
             ConsoleManager.instance.ChangeText("Sapients have conquered all living space and formed Ecumenopolis. You win!");
+            ConsoleManager.instance.fadeTime = 9999f;
+            ConsoleManager.instance.fadeTimer = 9999f;
+
         }
+    }
+    public void EventNuke()
+    {
+        FMODUnity.RuntimeManager.PlayOneShot("event:/Nuked");
+        ConsoleManager.instance.ChangeText("Oh humanity!");
+        //InstantiatePE(raincloudsPE, sector);
     }
     public void EventBurn()
     {

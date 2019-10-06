@@ -11,12 +11,13 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
     public GameObject textObj;
     public bool followCursor;
     public Vector3 originalPosition;
-    public enum Type {None, NoMatch, Meteor, Water, Sand, Earth, Fire, Wood,Coal, Rain, Volcano, Seeds, Life, Animals, Tribe, Monolith, Sapients,Technology }
+    public enum Type {None, NoMatch, Meteor, Water, Sand, Earth, Fire, Wood,Coal, Rain, Volcano, Seeds, Life, Animals, Tribe, Monolith, Sapients,Technology,Nuke ,Match}
     public Type type;
     public string description;
-
+    Color originalColor;
     private void Start()
     {
+        originalColor = GetComponent<Image>().color;
         originalPosition = GetComponent<RectTransform>().transform.position; // Get Canvas position
     }
 
@@ -70,8 +71,9 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
 
     Type ElementCombiner(Type a, Type b)
     {
-        //Debug.Log("Checking match for: "+ a +" & "+ b);
 
+        //Debug.Log("Checking match for: "+ a +" & "+ b);
+        
         if (a == b) // We are not combining indentical elements
             return Type.NoMatch;
 
@@ -95,22 +97,22 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
             if (a == Type.Water)
                 return Type.Life;
         }
-        else if (a == Type.Wood)
+        if (a == Type.Wood)
         {
             if (b == Type.Fire)
                 return Type.Coal;
         }
-        else if (b == Type.Wood)
+        if (b == Type.Wood)
         {
             if (a == Type.Fire)
                 return Type.Coal;
         }
-        else if (a == Type.Sapients)
+        if (a == Type.Sapients)
         {
             if (b == Type.Technology)
                 return Type.Tribe;
         }
-        else if (b == Type.Sapients)
+        if (b == Type.Sapients)
         {
             if (a == Type.Technology)
                 return Type.Tribe;
@@ -262,7 +264,7 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         }
         if (element == Type.Animals)
         {
-            if (sectorType == Sector.Type.Grass)
+            if (sectorType == Sector.Type.Grass || sectorType == Sector.Type.Forest)
             {
                 if (!onlyCheck)
                 {
@@ -271,6 +273,7 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
                 }
                 return true;
             }
+
         }
         if (element == Type.Sapients)
         {
@@ -317,7 +320,15 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
                 return true;
             }
         }
-
+        if (element == Type.Nuke)
+        {
+            if (!onlyCheck)
+            {
+                GameManager.instance.ReplaceSector(sector, Sector.Type.Crater);
+                GameManager.instance.EventNuke();
+            }
+            return true;
+        }
         // By default return false
         return false;
     }
@@ -409,6 +420,59 @@ public class Element : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
 
             //Debug.Log("Check on element: "+type+ " against: "+ MouseController.instance.hoveredSector.GetComponent<Sector>().type + " is fit: "+ ElementSectorCombiner(type, MouseController.instance.hoveredSector, true));
         }
+        if (MouseController.instance.hoveredElement)
+        {
+            if (ExtraCheck(type, MouseController.instance.hoveredElement.GetComponent<Element>().type))
+            {
+                GetComponent<Image>().color = new Color(0f, 1f, 0f);
+            }
+        }
+        else
+            GetComponent<Image>().color = originalColor;
+    }
+    bool ExtraCheck(Type a, Type b)
+    {
+        if (a == Type.Water)
+        {
+            if (b == Type.Fire)
+                return true;
+        }
+        if (b == Type.Water)
+        {
+            if (a == Type.Fire)
+                return true;
+        }
+        if (a == Type.Coal)
+        {
+            if (b == Type.Water)
+                return true;
+        }
+        if (b == Type.Coal)
+        {
+            if (a == Type.Water)
+                return true;
+        }
+        if (a == Type.Wood)
+        {
+            if (b == Type.Fire)
+                return true;
+        }
+        if (b == Type.Wood)
+        {
+            if (a == Type.Fire)
+                return true;
+        }
+        if (a == Type.Sapients)
+        {
+            if (b == Type.Technology)
+                return true;
+        }
+        if (b == Type.Sapients)
+        {
+            if (a == Type.Technology)
+                return true;
+        }
+        return false;
     }
     Vector3 GetMidPoint(Vector3 a, Vector3 b)
     {

@@ -14,12 +14,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: E:/Peliprojektit/LudumDare45/LudumDare45/Assets/SoundBank/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637059850681777303
+  lastModified: 637059923146127671
   LoadResult: 0
   FileSizes:
   - Name: 
-    Value: 1018
+    Value: 1130
   Exists: 1
+--- !u!114 &-7550110391521951692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Crowd
+  m_EditorClassIdentifier: 
+  Path: event:/Crowd
+  guid: d7f295d669342144b8c3571274a88496
+  Banks:
+  - {fileID: -2440016087129737605}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1010
 --- !u!114 &-5405001045384418889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,11 +103,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: E:/Peliprojektit/LudumDare45/LudumDare45/Assets/SoundBank/Desktop/Master.bank
   SubDir: 
-  lastModified: 637059850681757304
+  lastModified: 637059923146107671
   LoadResult: 0
   FileSizes:
   - Name: 
-    Value: 3074304
+    Value: 3153248
   Exists: 1
 --- !u!114 &-1613895800137339015
 MonoBehaviour:
@@ -155,12 +178,15 @@ MonoBehaviour:
   - {fileID: -5405001045384418889}
   - {fileID: 6296095425954228912}
   - {fileID: -1122590190318367320}
+  - {fileID: -7550110391521951692}
+  - {fileID: 1189149140470699267}
+  - {fileID: 7100761261692780683}
   EditorParameters: []
   MasterBanks:
   - {fileID: -2440016087129737605}
   StringsBanks:
   - {fileID: -8213244133485723817}
-  stringsBankWriteTime: 637059850681777303
+  stringsBankWriteTime: 637059923146127671
   cacheVersion: 3
 --- !u!114 &738755120553124062
 MonoBehaviour:
@@ -185,6 +211,29 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 7000
+--- !u!114 &1189149140470699267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Fireworks
+  m_EditorClassIdentifier: 
+  Path: event:/Fireworks
+  guid: ecce073377183f4597d9e3086dd6c2bb
+  Banks:
+  - {fileID: -2440016087129737605}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 6501
 --- !u!114 &2071158597910186089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,6 +371,29 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 350
+--- !u!114 &7100761261692780683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Nuked
+  m_EditorClassIdentifier: 
+  Path: event:/Nuked
+  guid: 870e4d9db599a7408fa2801fc79e08fe
+  Banks:
+  - {fileID: -2440016087129737605}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 3188
 --- !u!114 &7403289243014598843
 MonoBehaviour:
   m_ObjectHideFlags: 0
