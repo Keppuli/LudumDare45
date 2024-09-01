@@ -35,7 +35,7 @@ MonoBehaviour:
   Path: event:/Hum
   guid: 6b6aa46bfe1a854e95979af9c2ac95a7
   Banks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   IsStream: 1
   Is3D: 0
   IsOneShot: 1
@@ -58,7 +58,7 @@ MonoBehaviour:
   Path: event:/Crowd
   guid: d7f295d669342144b8c3571274a88496
   Banks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -81,7 +81,7 @@ MonoBehaviour:
   Path: event:/Pick
   guid: 3d8be00e9040154d8a6f14c7201e5c48
   Banks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -104,7 +104,7 @@ MonoBehaviour:
   Path: event:/Pop
   guid: 2997586fba5e664781e23e73e2595084
   Banks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -112,6 +112,26 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 188
+--- !u!114 &-2588839833764622930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: C:/Users/antti/Documents/Peliprojektit/LudumDare45/Assets/SoundBank/Desktop/Master.bank
+  SubDir: 
+  lastModified: 638608240102904860
+  LoadResult: 0
+  FileSizes:
+  - Name: 
+    Value: 3241344
+  Exists: 1
 --- !u!114 &-2440016087129737605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +151,26 @@ MonoBehaviour:
   FileSizes:
   - Name: 
     Value: 3241344
+  Exists: 1
+--- !u!114 &-2157248151122416271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: C:/Users/antti/Documents/Peliprojektit/LudumDare45/Assets/SoundBank/Desktop/Master.strings.bank
+  SubDir: 
+  lastModified: 638608240102947764
+  LoadResult: 0
+  FileSizes:
+  - Name: 
+    Value: 1164
   Exists: 1
 --- !u!114 &-1613895800137339015
 MonoBehaviour:
@@ -169,7 +209,7 @@ MonoBehaviour:
   Path: event:/Moo
   guid: 5f2cde28f1fc904fae6d84141752faa4
   Banks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -190,8 +230,8 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: -8213244133485723817}
-  - {fileID: -2440016087129737605}
+  - {fileID: -2157248151122416271}
+  - {fileID: -2588839833764622930}
   EditorEvents:
   - {fileID: 5753505668534650561}
   - {fileID: 738755120553124062}
@@ -207,10 +247,10 @@ MonoBehaviour:
   - {fileID: -7584436080957107837}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   StringsBanks:
-  - {fileID: -8213244133485723817}
-  stringsBankWriteTime: 637059991581606234
+  - {fileID: -2157248151122416271}
+  stringsBankWriteTime: 638608240102947764
   cacheVersion: 3
 --- !u!114 &738755120553124062
 MonoBehaviour:
@@ -227,7 +267,7 @@ MonoBehaviour:
   Path: event:/AmbientEmpty
   guid: 33a79cbe876ab54fa9d98a465442bfd6
   Banks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -250,7 +290,7 @@ MonoBehaviour:
   Path: event:/Fireworks
   guid: ecce073377183f4597d9e3086dd6c2bb
   Banks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
@@ -273,7 +313,7 @@ MonoBehaviour:
   Path: event:/Rain
   guid: 7ca2b0240dc2c2469dac7335cc981a3c
   Banks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -319,7 +359,7 @@ MonoBehaviour:
   Path: event:/Explode
   guid: 155006471758474d941641d6ade829c9
   Banks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   IsStream: 1
   Is3D: 0
   IsOneShot: 1
@@ -342,7 +382,7 @@ MonoBehaviour:
   Path: event:/Music
   guid: 9303ac1d0c320b4d9f857b8bbf58f826
   Banks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -365,7 +405,7 @@ MonoBehaviour:
   Path: event:/Drop
   guid: 720a393a08ce524c9035139cd1c35c78
   Banks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -410,7 +450,7 @@ MonoBehaviour:
   Path: event:/Nuked
   guid: 870e4d9db599a7408fa2801fc79e08fe
   Banks:
-  - {fileID: -2440016087129737605}
+  - {fileID: -2588839833764622930}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
